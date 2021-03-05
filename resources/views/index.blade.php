@@ -52,12 +52,34 @@
 
                             <td class="flex justify-end">
                                 <dropdown-list>
-                                    <dropdown-item text="Edit" redirect="{{ cp_route('runway.edit', ['model' => $model['_handle'], 'record' => $record->{$model['route_key']}]) }}"></dropdown-item>
+                                    @foreach((new \Statamic\Actions\ActionRepository)->for($record) as $action)
+                                        <form action="{{ cp_route('runway.actions.run', ['model' => $model['_handle'], 'record' => $record->{$model['route_key']}]) }}" method="POST">
+                                            @csrf
+
+                                            <input type="hidden" name="action" value="{{ $action->handle() }}">
+                                            <input type="hidden" name="selections" value="[{{ $record->id }}]">
+
+                                            <dropdown-item
+                                                text="{{ $action->title() }}"
+                                                redirect="#"
+                                            ></dropdown-item>
+                                        </form>
+                                    @endforeach
+
+                                    <dropdown-item
+                                        text="Edit"
+                                        redirect="{{ cp_route('runway.edit', ['model' => $model['_handle'], 'record' => $record->{$model['route_key']}]) }}"
+                                    ></dropdown-item>
+
                                     <form action="{{ cp_route('runway.destroy', ['model' => $model['_handle'], 'record' => $record->{$model['route_key']}]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
 
-                                        <dropdown-item class="warning" text="Delete" redirect="#"></dropdown-item>
+                                        <dropdown-item
+                                            class="warning"
+                                            text="Delete"
+                                            redirect="#"
+                                        ></dropdown-item>
                                     </form>
                                 </dropdown-list>
                             </td>

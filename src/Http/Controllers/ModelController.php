@@ -6,6 +6,7 @@ use DoubleThreeDigital\Runway\Http\Requests\StoreRequest;
 use DoubleThreeDigital\Runway\Http\Requests\UpdateRequest;
 use DoubleThreeDigital\Runway\Support\ModelFinder;
 use Illuminate\Http\Request;
+use Statamic\Actions\ActionRepository;
 use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
 
@@ -13,6 +14,8 @@ class ModelController extends CpController
 {
     public function index(Request $request, $model)
     {
+        // dd((new ActionRepository)->all());
+
         $model = ModelFinder::find($model);
         $blueprint = $model['blueprint'];
 
