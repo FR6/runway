@@ -1,5 +1,5 @@
 {
-    "name": "doublethreedigital/runway",
+    "name": "fr6/runway",
     "description": "Use Eloquent in Statamic like never before.",
     "license": "proprietary",
     "autoload": {
