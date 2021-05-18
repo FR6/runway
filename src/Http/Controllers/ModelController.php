@@ -8,6 +8,7 @@ use DoubleThreeDigital\Runway\Support\ModelFinder;
 use Illuminate\Http\Request;
 use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
+use Statamic\Facades\Entry;
 
 class ModelController extends CpController
 {
@@ -45,11 +46,29 @@ class ModelController extends CpController
             })
             ->toArray();
 
+        // Query filter
+
+        $contest_id = false;
+        if($contest_id = $request->input('contest_id')){
+            if($contest_id != '0'){
+                $query->where('contest_id', $contest_id);
+            }
+        }
+
+        // Dropdown filter
+
+        $contests = Entry::query()
+            ->where('collection', 'contest')
+            ->where('locale', 'default')
+            ->get();
+
         return view('runway::index', [
             'title'     => $model['name'],
             'model'     => $model,
             'records'   => $query->paginate(config('statamic.cp.pagination_size')),
             'columns'   => $columns,
+            'contests'  => $contests,
+            'contest_id' => $contest_id,
         ]);
     }
 

@@ -23,6 +23,19 @@
                     >
                 </form>
 
+                <div class="ml-2">
+                    <form class="w-full flex" action="#" method="get">
+                        <select name="contest_id" onchange="this.form.submit()">
+                            <option value="0" {{ $contest_id ? '' : 'selected' }}>Tous les concours</option>
+                            @foreach($contests as $contest)
+                                <option value="{{ $contest->id() }}" {{ $contest->id() == $contest_id ? 'selected' : '' }}>
+                                    {{ $contest->get('title') }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>  
+
                 @if(count($model['listing_buttons']) >= 1)
                     <div class="flex items-center ml-2">
                         @foreach($model['listing_buttons'] as $listingButton => $action)
@@ -34,7 +47,7 @@
                             >
                                 @csrf
                                 <input type="hidden" name="listing-button" value="{{ $listingButton }}">
-
+                                <input type="hidden" name="contest_id" value="{{ $contest_id }}">
                                 <button class="btn">{{ $listingButton }}</button>
                             </form>
                         @endforeach
